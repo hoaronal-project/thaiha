@@ -2,30 +2,24 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Spatie\Permission\Exceptions\UnauthorizedException;
 use Throwable;
 
-/**
- * Class Handler.
- */
 class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array
+     * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        GeneralException::class,
+        //
     ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $dontFlash = [
         'current_password',
@@ -34,47 +28,14 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Report or log an exception.
+     * Register the exception handling callbacks for the application.
      *
-     * @param  \Throwable  $exception
      * @return void
-     *
-     * @throws \Throwable
      */
-    public function report(Throwable $exception)
+    public function register()
     {
-        parent::report($exception);
-    }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Throwable
-     */
-    public function render($request, Throwable $exception)
-    {
-        if ($exception instanceof UnauthorizedException) {
-            return redirect()
-                ->route(homeRoute())
-                ->withFlashDanger(__('You do not have access to do that.'));
-        }
-
-        if ($exception instanceof AuthorizationException) {
-            return redirect()
-                ->back()
-                ->withFlashDanger($exception->getMessage() ?? __('You do not have access to do that.'));
-        }
-
-        if ($exception instanceof ModelNotFoundException) {
-            return redirect()
-                ->route(homeRoute())
-                ->withFlashDanger(__('The requested resource was not found.'));
-        }
-
-        return parent::render($request, $exception);
+        $this->reportable(function (Throwable $e) {
+            //
+        });
     }
 }

@@ -1,34 +1,24 @@
 <?php
 
 use App\Http\Controllers\ArticlesController;
-use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\StaticPagesController;
+use Illuminate\Support\Facades\Route;
 
 /*
- * Global Routes
- *
- * Routes that are used between both frontend and backend.
- */
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-// Switch between the included languages
-Route::get('lang/{lang}', [LocaleController::class, 'change'])->name('locale.change');
-
-/*
- * Frontend Routes
- */
-Route::group(['as' => 'frontend.'], function () {
-    includeRouteFiles(__DIR__.'/frontend/');
-});
-
-/*
- * Backend Routes
- *
- * These routes can only be accessed by users with type `admin`
- */
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
-    includeRouteFiles(__DIR__.'/backend/');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/tin-tuc', [ArticlesController::class, 'index']);
 
